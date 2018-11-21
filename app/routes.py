@@ -18,8 +18,7 @@ namespace_manager.bind('nrdcOntology', Ontology, override=False)
 g.namespace_manager = namespace_manager
 root = ""  # the root of the hierarchy
 
-
-# generic get function 
+# generic get function
 def get_generic(subject, prediate, object, jsonificate):
     tupleslist = []
     #ID key
@@ -91,6 +90,7 @@ def get_childrenOf():
         subject = (list(subject))[0]
         parents = get_generic(Ontology[subject], Ontology.childOf, None, False)
         if parents != []:
+            # grabs the term after the namespace
             childOf = parents[0]["o"].split('#')[-1]
             allChildrenOf.append({'subject': subject, 'childOf': childOf})
             childrenWithParents.append(subject)
@@ -100,9 +100,18 @@ def get_childrenOf():
     for subject in allChildrenOf:
         subject = subject["childOf"]
         if subject not in childrenWithParents:
+            global root
             root = subject
     # component -> deployment -> system -> site -> site_network : site_network = root
     return jsonify(allChildrenOf)
+
+# This is a special URI for testing
+@nrdcApp.route('/hierarchyTree', methods=['GET'])
+def getHierarchy():
+    # define the root
+    get_childrenOf()
+    # return everything having to do with the root
+    return get_generic(Ontology[root], None, None, True)
 
 # This is a special URI for testing
 @nrdcApp.route('/test', methods=['GET'])
