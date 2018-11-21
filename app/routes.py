@@ -1,9 +1,11 @@
 from app import nrdcApp
-from flask import jsonify
+from flask import json, jsonify
 #from flask_restplus import Namespace
 #RDF importer
 import rdflib	
 from rdflib import Namespace, RDF
+from rdflib.namespace import NamespaceManager
+JSON_SORT_KEYS = False
 
 #create triples graph			
 g=rdflib.Graph()
@@ -11,11 +13,14 @@ g=rdflib.Graph()
 g.parse("NRDCOntology.xml", format="xml")
 #Header namespace declaration
 Ontology = Namespace("http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#")
-w3 = Namespace("http://www.w3.org/2000/01/rdf-schema#label")
+namespace_manager = NamespaceManager(rdflib.Graph())
+namespace_manager.bind('nrdcOntology', Ontology, override=False)
+g.namespace_manager = namespace_manager
+
 
 
 # generic get function 
-def get_generic(subject, prediate, object, jsonify):
+def get_generic(subject, prediate, object, jsonificate):
 	tupleslist = []
 	#ID key
 	id = 0
@@ -24,12 +29,29 @@ def get_generic(subject, prediate, object, jsonify):
 		newSPO = {'id': id, 'o': o, 'p': p, 's': s}
 		id = id+1
 		tupleslist.append(newSPO)
-	if jsonify:
+	if jsonificate:
 		#format and return triples
-		return jsonify(tupleslist)	
+		return jsonify(tupleslist)
 	else:
 		return tupleslist
-	
+
+def get_subjects_list():
+	# create a dictionary
+	allSubjects = {}
+	# find all subjects without the namespace and add it as a key to the dictionary
+	# this keeps the subjects unique
+	for s in g.subjects():
+		s = s.split('#')[-1]
+		# "" is just to give the key a value with it. It is irrelevant
+		allSubjects[s] = ""
+	# create a list since jsonify() can't work on dictionaries
+	newAllSubjects = []
+	# sort the dictionary and
+	# add all dictionary and set the dictionary key as the value now.
+	for key in sorted(allSubjects):
+		newAllSubjects.append({'s' : key})
+	# return a json response object (Note: can't edit a jsonify object once it is created)
+	return newAllSubjects
 	
 # setting up the URIs for RESTful server. This is base URI
 @nrdcApp.route('/')							
@@ -50,18 +72,36 @@ def get_json():
 	return jsonObject
 
 # This is a special URI for testing
-@nrdcApp.route('/test', methods=['GET']) 
-def get_tests():
-	jsonObject = []
-	for objects in Ontology:
-		jsonObject = jsonObject + get_generic(None, Ontology[objects], None, False)
-	return jsonify(jsonObject)
-	
+@nrdcApp.route('/namespaces', methods=['GET'])
+def get_namespaces():
+	all_ns = [n for n in g.namespace_manager.namespaces()]
+	return jsonify(all_ns)
+
+# This is a special URI for testing
+@nrdcApp.route('/childrenOf', methods=['GET'])
+def get_childrenOf():
+	allChildrenOf = []
+	allChildrenOf2 = []
+	allSubjects = get_subjects_list()
+	for subject in allSubjects:
+		print(subject["s"])
+		print("\n")
+		allChildrenOf.append(get_generic(Ontology[subject["s"]], Ontology.childOf, None, False))
+		#	print(items)
+			#for s,p in items:
+			#	allChildrenOf.append({'subject': subject["s"], 'childOf': p.split('#')[-1]})
+	return jsonify(allChildrenOf)
+
+# This is a special URI for testing
+@nrdcApp.route('/test', methods=['GET'])
+def get_test():
+	allSubjects = get_subjects_list()
+	return jsonify(allSubjects)
 	
 # This is a special URI for secondary testing
 @nrdcApp.route('/test1', methods=['GET']) 
 def get_tests1():
-	jsonObject = get_generic(None, None, Ontology.organizational_tier, True)
+	jsonObject = get_generic(None, Ontology.childOf, None, True)
 	return jsonObject
 	
 @nrdcApp.route('/predicates', methods=['GET']) 
@@ -76,6 +116,5 @@ def get_predicates():
 		id = id+1
 		tupleslist.append(newSPO)
 	#format and return triples
-	return jsonify(tupleslist)	
-	
+	return jsonify(tupleslist)
 
