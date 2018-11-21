@@ -49,7 +49,7 @@ def get_subjects_list():
 	# sort the dictionary and
 	# add all dictionary and set the dictionary key as the value now.
 	for key in sorted(allSubjects):
-		newAllSubjects.append({'s' : key})
+		newAllSubjects.append({key})
 	# return a json response object (Note: can't edit a jsonify object once it is created)
 	return newAllSubjects
 	
@@ -84,13 +84,15 @@ def get_childrenOf():
 	allChildrenOf2 = []
 	allSubjects = get_subjects_list()
 	for subject in allSubjects:
-		print(subject["s"])
-		print("\n")
-		allChildrenOf.append(get_generic(Ontology[subject["s"]], Ontology.childOf, None, False))
-		#	print(items)
+		subject = (list(subject))[0]
+		parents = get_generic(Ontology[subject], Ontology.childOf, None, False)
+		if parents != []:
+			allChildrenOf.append(parents)
+			#	print(items)
 			#for s,p in items:
-			#	allChildrenOf.append({'subject': subject["s"], 'childOf': p.split('#')[-1]})
-	return jsonify(allChildrenOf)
+			print(subject)
+			allChildrenOf2.append({'subject': subject, 'childOf': ((parents[0]["o"]).split('#')[-1])})
+	return jsonify(allChildrenOf2)
 
 # This is a special URI for testing
 @nrdcApp.route('/test', methods=['GET'])
