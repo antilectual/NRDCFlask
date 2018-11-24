@@ -105,13 +105,23 @@ def get_childrenOf():
     # component -> deployment -> system -> site -> site_network : site_network = root
     return jsonify(allChildrenOf)
 
-# This is a special URI for testing
+# This is a special URI for retrieving the hierarchy (todo)
 @nrdcApp.route('/hierarchyTree', methods=['GET'])
 def getHierarchy():
-    # define the root
+    # excessive computing extra stuff,
+    # but it defines the root
     get_childrenOf()
+    thisThing = []
     # return everything having to do with the root
-    return get_generic(Ontology[root], None, None, True)
+    root_items = json.loads(json.dumps((get_generic(Ontology[root], None, None, False))))
+    id=0
+    for item in root_items:
+        #print(Ontology.characteristic)
+        #print(item['p'])
+        if(str(item['p']) != str(Ontology.characteristic)):
+            thisThing.append({"id": id, "o": item['o'], "p": item['p'], "s": item['s']})
+            id = id + 1
+    return jsonify(thisThing)
 
 # This is a special URI for testing
 @nrdcApp.route('/test', methods=['GET'])
