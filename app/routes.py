@@ -52,6 +52,17 @@ def get_subjects_list():
     # return a json response object (Note: can't edit a jsonify object once it is created)
     return newAllSubjects
 
+def appendChildren(item):
+    # children = []
+    # predicate = str(item['p']).split('#')[-1]
+    # print(predicate)
+    # if[str(predicate) == "parentOf"]:
+    #     children.append(appendChildren(get_generic(Ontology[predicate], None, None, False)))
+    # else:
+    #     return ""
+    # return children
+    return None
+
 # setting up the URIs for RESTful server. This is base URI
 @nrdcApp.route('/')
 @nrdcApp.route('/index')
@@ -68,6 +79,8 @@ def get_triples():
 @nrdcApp.route('/sites', methods=['GET']) 
 def get_json():
     jsonObject = get_generic(Ontology.site, None, None, True)
+    print(str(rdflib.namespace.split_uri(Ontology.site)[0])) # URI
+    print(str(rdflib.namespace.split_uri(Ontology.site)[1])) # name
     return jsonObject
 
 # This is a special URI for testing
@@ -78,7 +91,7 @@ def get_namespaces():
 
 # This is a special URI for testing
 @nrdcApp.route('/childrenOf', methods=['GET'])
-def get_childrenOf():
+def get_allChildrenOf():
     allChildrenOf = []                            # All objects that are a childOf something
     childrenWithParents = []                      # The list of objects that are a childOf a parent
     allSubjects = get_subjects_list()             # Get all subjects from subject/predicate/object triples
@@ -110,17 +123,24 @@ def get_childrenOf():
 def getHierarchy():
     # excessive computing extra stuff,
     # but it defines the root
-    get_childrenOf()
+    get_allChildrenOf()
     thisThing = []
     # return everything having to do with the root
     root_items = json.loads(json.dumps((get_generic(Ontology[root], None, None, False))))
     id=0
+    #iterate the items returned by get_generic()
     for item in root_items:
-        #print(Ontology.characteristic)
-        #print(item['p'])
+        # print(Ontology.characteristic)
+        # print(item['p'])
+        # if it's a characteristic, ignore it!
+        # item['p'] finds the p item, short for predicate and compares it to
+        # the Namespace (Ontology) + characteristic
         if(str(item['p']) != str(Ontology.characteristic)):
-            thisThing.append({"id": id, "o": item['o'], "p": item['p'], "s": item['s']})
-            id = id + 1
+           thisThing.append({"id": id, "o": item['o'], "p": item['p'], "s": item['s']})
+           id = id + 1
+        # if (str(item['p']) != str(Ontology.parentOf)):
+        #     thisThing = json.dumps(appendChildren(item))
+
     return jsonify(thisThing)
 
 # This is a special URI for testing
