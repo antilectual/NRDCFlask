@@ -145,8 +145,8 @@ def getHierarchy():
     return jsonify(thisThing)
 
 # This is a special URI for testing
-@nrdcApp.route('/test', methods=['GET'])
-def get_test():
+@nrdcApp.route('/allsubjects', methods=['GET'])
+def get_allsubjects():
     allSubjects = get_subjects_list()
     return jsonify(allSubjects)
 
@@ -170,8 +170,8 @@ def get_predicates():
     return jsonify(tupleslist)
 
 	
-@nrdcApp.route('/characteristicthingy', methods=['GET']) 
-def get_characteristicthingy():
+@nrdcApp.route('/allcharacteristics', methods=['GET']) 
+def get_allcharacteristics():
     tupleslist = []
     #ID key
     #for each triple in the graph
@@ -191,8 +191,8 @@ def get_characteristicthingy():
     #format and return triples
     return jsonify(tupleslist)
     
-@nrdcApp.route('/newthingy', methods=['GET']) 
-def get_newthingy():
+@nrdcApp.route('/ontology', methods=['GET']) 
+def get_ontology():
     organizationalTiers = []
     #ID key
     #for each triple in the graph
@@ -225,15 +225,15 @@ def get_newthingy():
         tierInformation['ParentOf'] = tierInfoChildren
         tierCharacteristics = []
         # Find the characteristics of the tier
-        for s1,p1,o1 in g.triples((Ontology[name], Ontology.characteristic, None)):
+        for subject,predicate,object in g.triples((Ontology[name], Ontology.characteristic, None)):
             # Find the name of the characteristic
-            for s2,p2,o2 in g.triples((o1, w3Namespace.label, None)):
+            for sub2,pred2,obj2 in g.triples((object, w3Namespace.label, None)):
                 instanceOfACharacteristic = {}
-                instanceOfACharacteristic['Label'] = o2
+                instanceOfACharacteristic['Label'] = obj2
             # Find the datatype of the characteristic
-            for s2,p2,o2 in g.triples((o1, Ontology.datatype, None)):
-                dataType = rdflib.namespace.split_uri(p2)[1]
-                instanceOfACharacteristic[dataType] = o2
+            for sub2,pred2,obj2 in g.triples((object, Ontology.datatype, None)):
+                dataType = rdflib.namespace.split_uri(pred2)[1]
+                instanceOfACharacteristic[dataType] = obj2
             # Add to list of characteristics for the OT
             tierCharacteristics.append(instanceOfACharacteristic)
         # Add list of characteristics to OT
