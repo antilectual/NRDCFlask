@@ -191,7 +191,7 @@ def get_allcharacteristics():
     #format and return triples
     return jsonify(tupleslist)
     
-@app.route('/ontology', methods=['GET']) 
+@app.route('/Ragnarok/', methods=['GET']) 
 def get_ontology():
     organizationalTiers = []
     #ID key
