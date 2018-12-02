@@ -1,4 +1,4 @@
-from app import nrdcApp
+from app import app
 from flask import json, jsonify
 #from flask_restplus import Namespace
 #RDF importer
@@ -65,19 +65,19 @@ def appendChildren(item):
     return None
 
 # setting up the URIs for RESTful server. This is base URI
-@nrdcApp.route('/')
-@nrdcApp.route('/index')
+@app.route('/')
+@app.route('/index')
 def index():
     return  "Hello, NRDC!"
 
 # This is a special URI to retrieve all triples of subject, predicate, object in the NRRC Ontology.
-@nrdcApp.route('/alltriples', methods=['GET']) 
+@app.route('/alltriples', methods=['GET']) 
 def get_triples():
     jsonObject = get_generic(None, None, None, True)
     return jsonObject
 
 # This is a special URI to retrieve all sites in the NRRC Ontology.    
-@nrdcApp.route('/sites', methods=['GET']) 
+@app.route('/sites', methods=['GET']) 
 def get_json():
     jsonObject = get_generic(Ontology.site, None, None, True)
     #print(str(rdflib.namespace.split_uri(Ontology.site)[0])) # URI
@@ -85,13 +85,13 @@ def get_json():
     return jsonObject
 
 # This is a special URI for testing
-@nrdcApp.route('/namespaces', methods=['GET'])
+@app.route('/namespaces', methods=['GET'])
 def get_namespaces():
     all_ns = [n for n in g.namespace_manager.namespaces()]
     return jsonify(all_ns)
 
 # This is a special URI for testing
-@nrdcApp.route('/childrenOf', methods=['GET'])
+@app.route('/childrenOf', methods=['GET'])
 def get_allChildrenOf():
     allChildrenOf = []                            # All objects that are a childOf something
     childrenWithParents = []                      # The list of objects that are a childOf a parent
@@ -120,7 +120,7 @@ def get_allChildrenOf():
     return jsonify(allChildrenOf)
 
 # This is a special URI for retrieving the hierarchy (todo)
-@nrdcApp.route('/hierarchyTree', methods=['GET'])
+@app.route('/hierarchyTree', methods=['GET'])
 def getHierarchy():
     # excessive computing extra stuff,
     # but it defines the root
@@ -145,18 +145,18 @@ def getHierarchy():
     return jsonify(thisThing)
 
 # This is a special URI for testing
-@nrdcApp.route('/allsubjects', methods=['GET'])
+@app.route('/allsubjects', methods=['GET'])
 def get_allsubjects():
     allSubjects = get_subjects_list()
     return jsonify(allSubjects)
 
 # This is a special URI for secondary testing
-@nrdcApp.route('/test1', methods=['GET']) 
+@app.route('/test1', methods=['GET']) 
 def get_tests1():
     jsonObject = get_generic(None, None, None, True)
     return jsonObject
 
-@nrdcApp.route('/predicates', methods=['GET']) 
+@app.route('/predicates', methods=['GET']) 
 def get_predicates():
     tupleslist = []
     #ID key
@@ -170,7 +170,7 @@ def get_predicates():
     return jsonify(tupleslist)
 
 	
-@nrdcApp.route('/allcharacteristics', methods=['GET']) 
+@app.route('/allcharacteristics', methods=['GET']) 
 def get_allcharacteristics():
     tupleslist = []
     #ID key
@@ -191,7 +191,7 @@ def get_allcharacteristics():
     #format and return triples
     return jsonify(tupleslist)
     
-@nrdcApp.route('/ontology', methods=['GET']) 
+@app.route('/ontology', methods=['GET']) 
 def get_ontology():
     organizationalTiers = []
     #ID key
@@ -218,8 +218,8 @@ def get_ontology():
         
         tierInfoChildren = []
         # Find the childOf of the tier name
-        for sP,pP,oP in g.triples((Ontology[name], Ontology.parentOf, None)):
-            tierInfoChildren.append(rdflib.namespace.split_uri(oP)[1])
+        for sC,pC,oC in g.triples((Ontology[name], Ontology.parentOf, None)):
+            tierInfoChildren.append(rdflib.namespace.split_uri(oC)[1])
             # Find the name of the OT
             
         tierInformation['ParentOf'] = tierInfoChildren
@@ -243,7 +243,9 @@ def get_ontology():
     return jsonify(OrganizeTiers(organizationalTiers))
     
 def OrganizeTiers(organizationalTiers):
+    #Set root
     get_allChildrenOf()
+    
     otList = []
     for ot in organizationalTiers:
         if(str(ot['Name']) == str(root)):
@@ -267,4 +269,4 @@ def getChildTier(organizationTiers, parentObject):
     
 if __name__ == '__main__':
     app.debug = False
-    nrdcApp.run(host="127.0.0.1", port=8100)
+    app.run(host="127.0.0.1", port=8100)
