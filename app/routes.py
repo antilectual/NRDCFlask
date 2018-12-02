@@ -80,8 +80,8 @@ def get_triples():
 @nrdcApp.route('/sites', methods=['GET']) 
 def get_json():
     jsonObject = get_generic(Ontology.site, None, None, True)
-    print(str(rdflib.namespace.split_uri(Ontology.site)[0])) # URI
-    print(str(rdflib.namespace.split_uri(Ontology.site)[1])) # name
+    #print(str(rdflib.namespace.split_uri(Ontology.site)[0])) # URI
+    #print(str(rdflib.namespace.split_uri(Ontology.site)[1])) # name
     return jsonObject
 
 # This is a special URI for testing
@@ -181,7 +181,7 @@ def get_allcharacteristics():
         for s1,p1,o1 in g.triples((Ontology[name], Ontology.characteristic, None)):
             #print(s1, p1, o1)
             for s2,p2,o2 in g.triples((o1, w3Namespace.label, None)):
-                print(o2)
+                #print(o2)
                 #characteristic1 = rdflib.namespace.split_uri(o1)[1]
                 #newSPO = {'Organizational Tier': name, 'characteristic': o1}
                 newSPO = {'Organizational Tier': name, 'Characteristic': o1, 'Name': o2}
@@ -256,10 +256,10 @@ def getChildTier(organizationTiers, parentObject):
     for ot in organizationTiers:
         if(str(ot['Name']) == str(parentObject['ParentOf'][0])):
             parent = ot
-            print(parent['ParentOf'])
+            #print(parent['ParentOf'])
             otList.append( ot )
             if (parent['ParentOf'] == []):
-                print("no parent")
+                #print("no parent")
                 return otList
             otList.extend(getChildTier(organizationTiers, parent))
             return otList
