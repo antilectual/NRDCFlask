@@ -266,4 +266,5 @@ def getChildTier(organizationTiers, parentObject):
     
     
 if __name__ == '__main__':
- app.run(host="0.0.0.0", port=9001)
+    app.debug = False
+    nrdcApp.run(host="127.0.0.1", port=8100)
