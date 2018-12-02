@@ -264,3 +264,6 @@ def getChildTier(organizationTiers, parentObject):
             otList.extend(getChildTier(organizationTiers, parent))
             return otList
     
+    
+if __name__ == '__main__':
+ app.run(host="0.0.0.0", port=9001)
