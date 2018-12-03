@@ -1,4 +1,5 @@
-from app import app
+from flask import Flask 
+app = Flask(__name__) 				# Create app object as FLASK (variable app)
 from flask import json, jsonify
 #from flask_restplus import Namespace
 #RDF importer
