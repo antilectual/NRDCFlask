@@ -144,20 +144,6 @@
 			</rdf:Description>
 		</nrdcrsh:characteristic>
 
-		<nrdcrsh:characteristic>
-			<rdf:Description>
-				<rdfs:label>Started Date</rdfs:label>
-				<nrdcrsh:datatype rdf:resource="xsd:datetime"/>
-			</rdf:Description>
-		</nrdcrsh:characteristic>
-
-		<nrdcrsh:characteristic>
-			<rdf:Description>
-				<rdfs:label>Started Date</rdfs:label>
-				<nrdcrsh:datatype rdf:resource="xsd:datetime"/>
-			</rdf:Description>
-		</nrdcrsh:characteristic>
-
 	</rdf:Description>
 
 	<rdf:Description rdf:about="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#site">
