@@ -1,6 +1,6 @@
 from flask import json, jsonify
 #RDF importer
-import rdflib    
+import rdflib
 from rdflib import Namespace, RDF
 from rdflib.namespace import NamespaceManager
 JSON_SORT_KEYS = False
@@ -27,26 +27,32 @@ def get_ontology():
         name = rdflib.namespace.split_uri(s)[1]
         # Store the name in a dictionary
         tierInformation = { "Name": name }
-        
+
         # Find the pluralization of the tier name
         for sP,pP,oP in g.triples((Ontology[name], Ontology.pluralization, None)):
             # Find the name of the OT
             tierInformation['Plural'] = oP
-            
+
+        # Find the referential characteristic
+        for s,p,o in g.triples((Ontology[name], Ontology.referentialCharacteristic, None)):
+            reference = o
+        # Find the name of the OT
+        tierInformation['referentialCharacteristic'] = o
+
         tierInfoParent = []
         # Find the parentOf of the tier name
         for sP,pP,oP in g.triples((Ontology[name], Ontology.childOf, None)):
             tierInfoParent.append(rdflib.namespace.split_uri(oP)[1])
             # Find the name of the OT
-            
+
         tierInformation['ChildOf'] = tierInfoParent
-        
+
         tierInfoChildren = []
         # Find the childOf of the tier name
         for sC,pC,oC in g.triples((Ontology[name], Ontology.parentOf, None)):
             tierInfoChildren.append(rdflib.namespace.split_uri(oC)[1])
             # Find the name of the OT
-            
+
         tierInformation['ParentOf'] = tierInfoChildren
         tierCharacteristics = []
         # Find the characteristics of the tier
@@ -66,18 +72,18 @@ def get_ontology():
         organizationalTiers.append(tierInformation)
 
     return jsonify(OrganizeTiers(organizationalTiers))
-    
+
 def OrganizeTiers(organizationalTiers):
     #Set root
     get_allChildrenOf()
-    
+
     otList = []
     for ot in organizationalTiers:
         if(str(ot['Name']) == str(root)):
             otList.append( ot )
             otList.extend(getChildTier(organizationalTiers, ot))
-    return otList 
-    
+    return otList
+
 def getChildTier(organizationTiers, parentObject):
     otList = []
     for ot in organizationTiers:
@@ -107,10 +113,10 @@ def get_allcharacteristics():
                 newSPO = {'Organizational Tier': name, 'Characteristic': o1, 'Name': o2}
                 tupleslist.append(newSPO)
         #tupleslist[p] = 'p'
-        
+
     #format and return triples
     return jsonify(tupleslist)
-    
+
 def get_predicates():
     tupleslist = []
     #ID key
@@ -122,15 +128,15 @@ def get_predicates():
         tupleslist.append(newSPO)
     #format and return triples
     return jsonify(tupleslist)
-    
+
 def get_tests1():
     jsonObject = get_generic(None, None, None, True)
     return jsonObject
-    
+
 def get_allsubjects():
     allSubjects = get_subjects_list()
     return jsonify(allSubjects)
-    
+
 def getHierarchy():
     # excessive computing extra stuff,
     # but it defines the root
@@ -153,7 +159,7 @@ def getHierarchy():
         #     thisThing = json.dumps(appendChildren(item))
 
     return jsonify(thisThing)
-    
+
 def get_allChildrenOf():
     allChildrenOf = []                            # All objects that are a childOf something
     childrenWithParents = []                      # The list of objects that are a childOf a parent
@@ -180,24 +186,24 @@ def get_allChildrenOf():
             root = subject
     # component -> deployment -> system -> site -> site_network : site_network = root
     return jsonify(allChildrenOf)
-    
+
 def get_namespaces():
     all_ns = [n for n in g.namespace_manager.namespaces()]
     return jsonify(all_ns)
-    
+
 def get_json():
     jsonObject = get_generic(Ontology.site, None, None, True)
     #print(str(rdflib.namespace.split_uri(Ontology.site)[0])) # URI
     #print(str(rdflib.namespace.split_uri(Ontology.site)[1])) # name
     return jsonObject
-    
+
 def get_triples():
     jsonObject = get_generic(None, None, None, True)
     return jsonObject
-    
+
 def index():
     return  "Hello, NRDC!"
-    
+
 # generic get function
 def get_generic(subject, prediate, object, jsonificate):
     tupleslist = []
