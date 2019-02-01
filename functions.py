@@ -34,10 +34,12 @@ def get_ontology():
             tierInformation['Plural'] = oP
 
         # Find the referential characteristic
+        referenceLabel = ""
         for s,p,o in g.triples((Ontology[name], Ontology.referentialCharacteristic, None)):
-            reference = o
-        # Find the name of the OT
-        tierInformation['referentialCharacteristic'] = o
+            for sub2,pred2,obj2 in g.triples((o, w3Namespace.label, None)):
+                referenceLabel = obj2
+        tierInformation['referentialCharacteristic'] = referenceLabel
+
 
         tierInfoParent = []
         # Find the parentOf of the tier name
