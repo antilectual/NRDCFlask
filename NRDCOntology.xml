@@ -37,13 +37,13 @@
 		<rdfs:label>Characteristic of a metadata entity.</rdfs:label>
 		<rdfs:comment>
 			A single characteristic of a metadata entity.
-			These are general descriptions of data that we want to store about specific istances of objects our data is describing. I.E. "Name", "Location", "Serial Number".
+			These are general descriptions of data that we want to store about specific instances of objects our data is describing. I.E. "Name", "Location", "Serial Number".
 			These will correspond to the columns of the tables we are creating and represent important information we want to store about the group of objects we are recording data about.
 		</rdfs:comment>
 	</owl:Class>
 
 
-<!-- In Progress: An "associated entity". Focus on the orginizational tiers for now. -->
+<!-- In Progress: An "associated entity". Focus on the organizational tiers for now. -->
 	<rdf:Description rdf:about="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#document">
 		<!--Metadata about document as a general entity-->
 		<rdf:type rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#assocaited_entity" />
@@ -54,8 +54,8 @@
 		<nrdcrsh:assocaitedWith rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#system"/>
 		<nrdcrsh:assocaitedWith rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#deployment"/>
 
-		<!--Characteristics referring to the types of data we store about individal documents. These would relate to columns of a table in relational database.
-		"Characteristics" can be made more specific by being broken down into subgroups of indeifying, associative and standard-->
+		<!--Characteristics referring to the types of data we store about individual documents. These would relate to columns of a table in relational database.
+		"Characteristics" can be made more specific by being broken down into subgroups of identifying, associative and standard-->
 		<nrdcrsh:characteristic>Document ID</nrdcrsh:characteristic>
 		<nrdcrsh:characteristic>Network ID</nrdcrsh:characteristic>
 		<nrdcrsh:characteristic>Site ID</nrdcrsh:characteristic>
@@ -77,7 +77,7 @@
 		<nrdcrsh:parentOf rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#site"/>
 
 
-		<!--Characteristics referring to the types of data we store about individal site networks. These would relate to columns in relational database.-->
+		<!--Characteristics referring to the types of data we store about individual site networks. These would relate to columns in relational database.-->
 		<nrdcrsh:ordinalCharacteristic>
 			<rdf:Description>
         <rdfs:label>Network</rdfs:label>
@@ -86,7 +86,7 @@
 		</nrdcrsh:ordinalCharacteristic>
 
 
-		<!-- Handling foreign characteristics? Requires a different term or some rdf:resource refrence. Anonomous refrence somehow? -->
+		<!-- Handling foreign characteristics? Requires a different term or some rdf:resource reference. Anonymous reference somehow? -->
 		<nrdcrsh:referentialCharacteristic>
 			<rdf:Description>
 				<rdfs:label>Principal Investigator</rdfs:label>
@@ -155,7 +155,7 @@
 		<nrdcrsh:parentOf rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#system"/>
 		<nrdcrsh:childOf rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#site-network"/>
 
-		<!-- Primary orginizing characteristic which orders the data we will store. This is a synthetic value -->
+		<!-- Primary organizing characteristic which orders the data we will store. This is a synthetic value -->
 		<nrdcrsh:ordinalCharacteristic>
 			<rdf:Description>
 				<rdfs:label>Site</rdfs:label>
@@ -164,17 +164,17 @@
 		</nrdcrsh:ordinalCharacteristic>
 
 
-		<!-- Characteristic representitive of a foreign key. Requires a different term or some rdf:resource refrence.-->
+		<!-- Characteristic representative of a foreign key. Requires a different term or some rdf:resource reference.-->
 		<nrdcrsh:referentialCharacteristic>
 			<rdf:Description>
 				<rdfs:label>Network</rdfs:label>
 				<nrdcrsh:datatype rdf:resource="xsd:integer"/>
-				<!--Here there should be a refrence to the Orginizational Tier this refers to-->
+				<!--Here there should be a reference to the Organizational Tier this refers to-->
 				<nrdcrsh:referent rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#site-network"/>
 			</rdf:Description>
 		</nrdcrsh:referentialCharacteristic>
 
-		<!--Characteristics referring to the types of data we store about individal sites. These would relate to columns in relational database.-->
+		<!--Characteristics referring to the types of data we store about individual sites. These would relate to columns in relational database.-->
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Unique Identifier</rdfs:label>
@@ -273,7 +273,7 @@
 		<nrdcrsh:parentOf rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#deployment"/>
 		<nrdcrsh:childOf rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#site"/>
 
-		<!-- Primary orginizing characteristic which orders the data we will store. This is a synthetic value -->
+		<!-- Primary organizing characteristic which orders the data we will store. This is a synthetic value -->
 		<nrdcrsh:ordinalCharacteristic>
 			<rdf:Description>
 				<rdfs:label>System</rdfs:label>
@@ -282,17 +282,17 @@
 		</nrdcrsh:ordinalCharacteristic>
 
 
-		<!-- Characteristic representitive of a foreign key. Requires a different term or some rdf:resource refrence.-->
+		<!-- Characteristic representative of a foreign key. Requires a different term or some rdf:resource reference.-->
 		<nrdcrsh:referentialCharacteristic>
 			<rdf:Description>
 				<rdfs:label>Site</rdfs:label>
 				<nrdcrsh:datatype rdf:resource="xsd:integer"/>
-				<!--Here there should be a refrence to the Orginizational Tier this refers to-->
+				<!--Here there should be a reference to the Organizational Tier this refers to-->
 				<nrdcrsh:referent rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#site"/>
 			</rdf:Description>
 		</nrdcrsh:referentialCharacteristic>
 
-		<!--Characteristics referring to the types of data we store about individal sites. These would relate to columns in relational database.-->
+		<!--Characteristics referring to the types of data we store about individual sites. These would relate to columns in relational database.-->
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Unique Identifier</rdfs:label>
@@ -354,14 +354,14 @@
 
 	<rdf:Description rdf:about="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#deployment">
 
-		<!--Metadata about sites as a general entity-->
+		<!--Metadata about deployments as a general entity-->
 		<rdf:type rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#organizational_tier"/>
 		<nrdcrsh:name>Deployment</nrdcrsh:name>
 		<nrdcrsh:pluralization>Deployments</nrdcrsh:pluralization>
 		<nrdcrsh:parentOf rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#component"/>
 		<nrdcrsh:childOf rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#system"/>
 
-		<!-- Primary orginizing characteristic which orders the data we will store. This is a synthetic value -->
+		<!-- Primary organizing characteristic which orders the data we will store. This is a synthetic value -->
 		<nrdcrsh:ordinalCharacteristic>
 			<rdf:Description>
 				<rdfs:label>Deployment</rdfs:label>
@@ -370,17 +370,17 @@
 		</nrdcrsh:ordinalCharacteristic>
 
 
-		<!-- Characteristic representitive of a foreign key. Requires a different term or some rdf:resource refrence.-->
+		<!-- Characteristic representative of a foreign key. Requires a different term or some rdf:resource reference.-->
 		<nrdcrsh:referentialCharacteristic>
 			<rdf:Description>
 				<rdfs:label>System</rdfs:label>
 				<nrdcrsh:datatype rdf:resource="xsd:integer"/>
-				<!--Here there should be a refrence to the Orginizational Tier this refers to-->
+				<!--Here there should be a refrence to the Organizational Tier this refers to-->
 				<nrdcrsh:referent rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#system"/>
 			</rdf:Description>
 		</nrdcrsh:referentialCharacteristic>
 
-		<!--Characteristics referring to the types of data we store about individal sites. These would relate to columns in relational database.-->
+		<!--Characteristics referring to the types of data we store about individual sites. These would relate to columns in relational database.-->
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Unique Identifier</rdfs:label>
@@ -473,13 +473,13 @@
 
 	<rdf:Description rdf:about="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#component">
 
-		<!--Metadata about sites as a general entity-->
+		<!--Metadata about components as a general entity-->
 		<rdf:type rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#organizational_tier"/>
 		<nrdcrsh:name>Component</nrdcrsh:name>
 		<nrdcrsh:pluralization>Components</nrdcrsh:pluralization>
 		<nrdcrsh:childOf rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#deployment"/>
 
-		<!-- Primary orginizing characteristic which orders the data we will store. This is a synthetic value -->
+		<!-- Primary organizing characteristic which orders the data we will store. This is a synthetic value -->
 		<nrdcrsh:ordinalCharacteristic>
 			<rdf:Description>
 				<rdfs:label>Component</rdfs:label>
@@ -488,17 +488,17 @@
 		</nrdcrsh:ordinalCharacteristic>
 
 
-		<!-- Characteristic representitive of a foreign key. Requires a different term or some rdf:resource refrence.-->
+		<!-- Characteristic representative of a foreign key. Requires a different term or some rdf:resource reference.-->
 		<nrdcrsh:referentialCharacteristic>
 			<rdf:Description>
 				<rdfs:label>Deployment</rdfs:label>
 				<nrdcrsh:datatype rdf:resource="xsd:integer"/>
-				<!--Here there should be a refrence to the Orginizational Tier this refers to-->
+				<!--Here there should be a reference to the Organizational Tier this refers to-->
 				<nrdcrsh:referent rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#deployment"/>
 			</rdf:Description>
 		</nrdcrsh:referentialCharacteristic>
 
-		<!--Characteristics referring to the types of data we store about individal sites. These would relate to columns in relational database.-->
+		<!--Characteristics referring to the types of data we store about individual sites. These would relate to columns in relational database.-->
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Unique Identifier</rdfs:label>
