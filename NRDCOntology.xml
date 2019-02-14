@@ -236,6 +236,7 @@
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Creation Date</rdfs:label>
+				<nrdcrsh:dateTimeOffsetLabel>Time Zone Offset</nrdcrsh:dateTimeOffsetLabel>
 				<nrdcrsh:datatype rdf:resource="xsd:datetime"/>
 			</rdf:Description>
 		</nrdcrsh:characteristic>
@@ -243,6 +244,7 @@
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Modification Date</rdfs:label>
+				<nrdcrsh:dateTimeOffsetLabel>Time Zone Offset</nrdcrsh:dateTimeOffsetLabel>
 				<nrdcrsh:datatype rdf:resource="xsd:datetime"/>
 			</rdf:Description>
 		</nrdcrsh:characteristic>
