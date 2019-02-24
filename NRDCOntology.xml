@@ -211,7 +211,30 @@
 				<nrdcrsh:datatype rdf:resource="xsd:string"/>
 			</rdf:Description>
 		</nrdcrsh:characteristic> -->
+		
+		<!--GPS information-->
+		<nrdcrsh:characteristic>
+			<rdf:Description>
+				<rdfs:label>Latitude</rdfs:label>
+				<nrdcrsh:datatype rdf:resource="xsd:decimal"/>
+			</rdf:Description>
+		</nrdcrsh:characteristic>
+		
+		<nrdcrsh:characteristic>
+			<rdf:Description>
+				<rdfs:label>Longitude</rdfs:label>
+				<nrdcrsh:datatype rdf:resource="xsd:decimal"/>
+			</rdf:Description>
+		</nrdcrsh:characteristic>
+		
+		<nrdcrsh:characteristic>
+			<rdf:Description>
+				<rdfs:label>Elevation</rdfs:label>
+				<nrdcrsh:datatype rdf:resource="xsd:decimal"/>
+			</rdf:Description>
+		</nrdcrsh:characteristic>
 
+		<!--Time information-->
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Time Zone Name</rdfs:label>
@@ -333,6 +356,7 @@
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Creation Date</rdfs:label>
+				<nrdcrsh:dateTimeOffsetLabel>Time Zone Offset</nrdcrsh:dateTimeOffsetLabel>
 				<nrdcrsh:datatype rdf:resource="xsd:datetime"/>
 			</rdf:Description>
 		</nrdcrsh:characteristic>
@@ -340,6 +364,7 @@
 		<nrdcrsh:characteristic>
 			<rdf:Description>
 				<rdfs:label>Modification Date</rdfs:label>
+				<nrdcrsh:dateTimeOffsetLabel>Time Zone Offset</nrdcrsh:dateTimeOffsetLabel>
 				<nrdcrsh:datatype rdf:resource="xsd:datetime"/>
 			</rdf:Description>
 		</nrdcrsh:characteristic>
@@ -419,6 +444,28 @@
 				<nrdcrsh:datatype rdf:resource="xsd:string"/>
 			</rdf:Description>
 		</nrdcrsh:characteristic> -->
+		
+		<!--GPS information-->
+		<nrdcrsh:characteristic>
+			<rdf:Description>
+				<rdfs:label>Latitude</rdfs:label>
+				<nrdcrsh:datatype rdf:resource="xsd:decimal"/>
+			</rdf:Description>
+		</nrdcrsh:characteristic>
+		
+		<nrdcrsh:characteristic>
+			<rdf:Description>
+				<rdfs:label>Longitude</rdfs:label>
+				<nrdcrsh:datatype rdf:resource="xsd:decimal"/>
+			</rdf:Description>
+		</nrdcrsh:characteristic>
+		
+		<nrdcrsh:characteristic>
+			<rdf:Description>
+				<rdfs:label>Elevation</rdfs:label>
+				<nrdcrsh:datatype rdf:resource="xsd:decimal"/>
+			</rdf:Description>
+		</nrdcrsh:characteristic>
 
 		<nrdcrsh:characteristic>
 			<rdf:Description>
