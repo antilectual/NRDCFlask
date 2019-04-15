@@ -1,9 +1,15 @@
-from flask import json, jsonify
+from __future__ import print_function
+import sys
+import logging
+logging.basicConfig(level=logging.DEBUG)
+from flask import json, jsonify, request
 #RDF importer
 import rdflib
 from rdflib import Namespace, RDF
 from rdflib.namespace import NamespaceManager
 JSON_SORT_KEYS = False
+from werkzeug.datastructures import ImmutableMultiDict
+
 
 #create triples graph
 g=rdflib.Graph()
@@ -250,3 +256,17 @@ def appendChildren(item):
     #     return ""
     # return children
     return None
+
+def save_json_to_file():
+    if request.method == 'POST':
+        data = request.get_data().decode('utf8')
+        # print('FORM:', file=sys.stderr)
+        print(data, file=sys.stderr)
+        # user = form['user']
+        filename = 'submitted_json.json'
+        # if not os.path.isdir(user):
+        #     os.system('mkdir '+ user)
+        with open('e:\\jsonsave\\'+filename, 'w') as outfile:
+            outfile.write(data)
+        outfile.close()
+    return "success"
