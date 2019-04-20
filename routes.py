@@ -70,6 +70,11 @@ def return_allCharacteristics():
 def return_ontology():
     return get_ontology()
 
+# URI for parsing the ontology graph to structure the graph into a navigational hierarchy tree
+@app.route('/Ragnarok/Short', methods=['GET'])
+def return_short_ontology():
+    return get_short_ontology()
+
 
 # URI for parsing the ontology graph to structure the graph into a navigational hierarchy tree
 @app.route('/saveJSON/', methods=['POST', 'OPTIONS'])

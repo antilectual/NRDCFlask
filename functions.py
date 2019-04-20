@@ -15,16 +15,23 @@ from werkzeug.datastructures import ImmutableMultiDict
 g=rdflib.Graph()
 #load ontology into triples
 g.parse("NRDCOntology.xml", format="xml")
+gShort=rdflib.Graph()
+#load ontology into triples
+gShort.parse("PartialOntology.xml", format="xml")
 #Header namespace declaration
 Ontology = Namespace("http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#")
 w3Namespace = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 namespace_manager = NamespaceManager(rdflib.Graph())
 namespace_manager.bind('nrdcOntology', Ontology, override=False)
 g.namespace_manager = namespace_manager
+gShort.namespace_manager = namespace_manager
 root = ""  # the root of the hierarchy
+ontologyID = 0
 
 def get_ontology():
     organizationalTiers = []
+    global ontologyID
+    ontologyID = 0
     #ID key
     #for each triple in the graph
     #for s,p,o in g:#.triples(None, 'greh', None):
@@ -81,7 +88,68 @@ def get_ontology():
 
     return jsonify(OrganizeTiers(organizationalTiers))
 
+def get_short_ontology():
+    organizationalTiers = []
+    global ontologyID #ontologyID is used in get_generic() function
+    ontologyID = 1
+    #ID key
+    #for each triple in the graph
+    #for s,p,o in g:#.triples(None, 'greh', None):
+    for s,p,o in gShort.triples((None, None , Ontology.organizational_tier)):
+        # Find the name of the OT
+        name = rdflib.namespace.split_uri(s)[1]
+        # Store the name in a dictionary
+        tierInformation = { "Name": name }
+
+        # Find the pluralization of the tier name
+        for sP,pP,oP in gShort.triples((Ontology[name], Ontology.pluralization, None)):
+            # Find the name of the OT
+            tierInformation['Plural'] = oP
+
+        # Find the referential characteristic
+        referenceLabel = ""
+        for s,p,o in gShort.triples((Ontology[name], Ontology.referentialCharacteristic, None)):
+            for sub2,pred2,obj2 in gShort.triples((o, w3Namespace.label, None)):
+                referenceLabel = obj2
+        tierInformation['referentialCharacteristic'] = referenceLabel
+
+
+        tierInfoParent = []
+        # Find the parentOf of the tier name
+        for sP,pP,oP in gShort.triples((Ontology[name], Ontology.childOf, None)):
+            tierInfoParent.append(rdflib.namespace.split_uri(oP)[1])
+            # Find the name of the OT
+
+        tierInformation['ChildOf'] = tierInfoParent
+
+        tierInfoChildren = []
+        # Find the childOf of the tier name
+        for sC,pC,oC in gShort.triples((Ontology[name], Ontology.parentOf, None)):
+            tierInfoChildren.append(rdflib.namespace.split_uri(oC)[1])
+            # Find the name of the OT
+
+        tierInformation['ParentOf'] = tierInfoChildren
+
+        tierCharacteristics = []
+        # Find the characteristics of the tier
+        for subject,predicate,object in gShort.triples((Ontology[name], Ontology.characteristic, None)):
+            # Find the name of the characteristic
+            for sub2,pred2,obj2 in gShort.triples((object, w3Namespace.label, None)):
+                instanceOfACharacteristic = {}
+                instanceOfACharacteristic['Label'] = obj2
+            # Find the datatype of the characteristic
+            for sub2,pred2,obj2 in gShort.triples((object, Ontology.datatype, None)):
+                dataType = rdflib.namespace.split_uri(pred2)[1]
+                instanceOfACharacteristic[dataType] = obj2
+            # Add to list of characteristics for the OT
+            tierCharacteristics.append(instanceOfACharacteristic)
+        # Add list of characteristics to OT
+        tierInformation['Characteristics'] = tierCharacteristics
+        organizationalTiers.append(tierInformation)
+    return jsonify(OrganizeTiers(organizationalTiers))
+
 def OrganizeTiers(organizationalTiers):
+    print("ontologyID: " + str(ontologyID), file=sys.stderr)
     #Set root
     get_allChildrenOf()
 
@@ -218,10 +286,18 @@ def get_generic(subject, prediate, object, jsonificate):
     #ID key
     id = 0
     #for each triple in the graph
-    for s,p,o in g.triples((subject, prediate, object)):
-        newSPO = {'id': id, 'o': o, 'p': p, 's': s}
-        id = id+1
-        tupleslist.append(newSPO)
+    if (ontologyID == 0):
+        # print("ontology 0", file=sys.stderr)
+        for s,p,o in g.triples((subject, prediate, object)):
+            newSPO = {'id': id, 'o': o, 'p': p, 's': s}
+            id = id+1
+            tupleslist.append(newSPO)
+    if (ontologyID == 1):
+        # print("ontology 1", file=sys.stderr)
+        for s,p,o in gShort.triples((subject, prediate, object)):
+            newSPO = {'id': id, 'o': o, 'p': p, 's': s}
+            id = id+1
+            tupleslist.append(newSPO)
     if jsonificate:
         #format and return triples
         return jsonify(tupleslist)
