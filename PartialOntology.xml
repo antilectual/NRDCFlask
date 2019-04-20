@@ -69,6 +69,7 @@
 
 <!--Descriptor of a site network with all associated characteristics-->
 
+
 	<rdf:Description rdf:about="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#site">
 		<!--Metadata about sites as a general entity-->
 		<rdf:type rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#organizational_tier"/>
@@ -85,14 +86,14 @@
 		</nrdcrsh:ordinalCharacteristic>
 
 		<!-- Characteristic representative of a foreign key. Requires a different term or some rdf:resource reference.-->
-		<nrdcrsh:characteristic>
+		<nrdcrsh:referentialCharacteristic>
 			<rdf:Description>
 				<rdfs:label>Network</rdfs:label>
 				<nrdcrsh:datatype rdf:resource="xsd:integer"/>
 				<!--Here there should be a reference to the Organizational Tier this refers to-->
 				<!-- <nrdcrsh:referent rdf:resource="http://www.sensor.nevada.edu/ontologies/research_site_hierarchy#site-network"/> -->
 			</rdf:Description>
-		</nrdcrsh:characteristic>
+		</nrdcrsh:referentialCharacteristic>
 
 		<!--Characteristics referring to the types of data we store about individual sites. These would relate to columns in relational database.-->
 		<nrdcrsh:characteristic>
